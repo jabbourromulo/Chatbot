@@ -3,18 +3,19 @@ import subprocess as sp
 
 print("1- Abrir link da Web: ")
 menuItem = int(input())
+link = input("Digite o link que você gostaria de abrir\n")
 #print(type(menuItem))
 
-def AbreLink():
+def AbreLink(web):
     platform = sys.platform
 
     if ("win" in platform):
-        os.startfile("www.cnbc.com")
+        os.startfile(f"{web}")
     elif ("linux" in platform):
         try:
-            sp.Popen("www.cnbc.com")
+            sp.Popen(f"{web}")
         except FileNotFoundError:
-            sp.Popen(["xdg-open", "www.cnbc.com"])
+            sp.Popen(["xdg-open", f"{web}"])
 
 if (menuItem == 1):
-    AbreLink()
+    AbreLink(link)
