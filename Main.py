@@ -18,4 +18,4 @@ def AbreLink(web):
             sp.Popen(["xdg-open", f"{web}"])
 
 if (menuItem == 1):
-    AbreLink(link)
+    AbreLink()
