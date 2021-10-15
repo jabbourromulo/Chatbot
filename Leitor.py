@@ -1,15 +1,13 @@
-dicionario = {
-    "Planetas": ["Terra", "Marte", "Saturno", "Mercurio", "Jupiter", "Urano", "Netuno", "Venus"],
-    "Satelites": ["Lua", "Europa", "Ganymede", "Io", "Callisto", "Amalthea", "Himalia", "Adrastea"],
-}
+import json, Dicionario
 
-for tag in dicionario:
-    print(tag)
-    
-for tag in dicionario:
-    for planeta in dicionario["Planetas"]:
-        print(planeta)
-    
-for tag in dicionario:
-    for planetaSatelite in dicionario[tag]:
-        print(planetaSatelite)
+dici = Dicionario.dicionario
+
+with open("Espaco.json","w") as espacoJson:
+    json.dump(dici, espacoJson, indent=2)
+
+with open("Espaco.json") as espacoJson:
+    espacoLeitura = json.load(espacoJson)
+print(espacoLeitura)
+
+for tag in espacoLeitura:
+    print(tag) 

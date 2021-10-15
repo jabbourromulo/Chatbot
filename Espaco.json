@@ -1,0 +1,22 @@
+{
+  "Planetas": [
+    "Terra",
+    "Marte",
+    "Saturno",
+    "Mercurio",
+    "Jupiter",
+    "Urano",
+    "Netuno",
+    "Venus"
+  ],
+  "Satelites": [
+    "Lua",
+    "Europa",
+    "Ganymede",
+    "Io",
+    "Callisto",
+    "Amalthea",
+    "Himalia",
+    "Adrastea"
+  ]
+}
