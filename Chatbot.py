@@ -10,7 +10,7 @@ class Joquinha():
             memory = open(name + '.json', 'r')
         except FileNotFoundError:
             memory = open(name + '.json', 'w')
-            memory.write('[["Joquinha"], {"Oi": "Olá! Qual seu nome?", "tchau": "Tchau! Tchau!"}]')
+            memory.write('[["Joquinha"], {"oi": "Olá! Qual seu nome?", "tchau": "Tchau! Tchau!"}]')
             memory.close()
             memory = open(name + '.json', 'r')
 
@@ -22,18 +22,35 @@ class Joquinha():
     def listen(self, phrase=None):
         if phrase == None:
             phrase = input('Digite aqui: ')
-        phrase = str(phrase)
+        phrase = str(phrase).lower()
 #        phrase = phrase.lower()
         return phrase
 
     def think(self, phrase):
+        def execute(phrase):
+            platform = sys.platform
+            command = phrase.replace('executa ', '')
+            if 'win' in platform:
+                os.startfile(command)
+            if 'linux' in platform:
+                try:
+                    sp.Popen(command)
+                except FileNotFoundError:
+                    sp.Popen(['xdg-open', command])
+        
         if phrase in self.phrases:
             return self.phrases[phrase]
-        if phrase == 'Aprende':
+        # harcoded
+        if phrase == 'aprende':
             return 'O que você quer que eu aprenda?'
-        if phrase == 'Pesquisa':
+        if phrase == 'pesquisa':
             return "www.google.com"
-        
+        #if phrase == 'executa':
+        #    return execute()
+        if 'executa ' in phrase:
+            execute(phrase)
+            return "Ta aí meu!!"
+
         # historic
         lastPhrase = self.historic[-1]
         if lastPhrase == 'Olá! Qual seu nome?':
@@ -58,7 +75,7 @@ class Joquinha():
 
     def getName(self, name):
         if 'Meu nome é ' in name:
-            name = name[12:]
+            name = name[11:]
         name = name.title()
         return name
     
@@ -78,18 +95,7 @@ class Joquinha():
         memory = open(self.name + '.json', 'w')
         json.dump([self.known, self.phrases], memory)
         memory.close()
-    
+                    
     def speak(self, phrase):
-        if 'Executa ' in phrase:
-            platform = sys.platform
-            command = phrase.replace('Executa ', '')
-            if 'win' in platform:
-                os.startfile(command)
-            if 'linux' in platform:
-                try:
-                    sp.Popen(command)
-                except FileNotFoundError:
-                    sp.Popen(['xdg-open', command])
-        else:
-            print(phrase)
+       # print(phrase)
         self.historic.append(phrase)
