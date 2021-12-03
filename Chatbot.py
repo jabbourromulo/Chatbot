@@ -38,14 +38,14 @@ class Joquinha():
     def think(self, phrase):
         def execute(phrase):
             platform = sys.platform
-            command = phrase.replace('/executa ', '')
+            link = phrase.replace('/executa ', '')
             if 'win' in platform:
-                os.startfile(command)
+                os.startfile(link)
             if 'linux' in platform:
                 try:
-                    sp.Popen(command)
+                    sp.Popen(link)
                 except FileNotFoundError:
-                    sp.Popen(['xdg-open', command])
+                    sp.Popen(['xdg-open', link])
         
         if phrase in self.phrases:
             return self.phrases[phrase]
@@ -66,21 +66,23 @@ class Joquinha():
             name = self.getName(phrase)
             response = self.answerName(name)
             return response
-        #if lastPhrase == 'O que você gostaria de adicionar na sua lista?':
-        #    while True:
-        #        listen()
-        #        if phrase != "sair":
-        #            self.lista.append(phrase)
-        #            self.saveMemory()
-        #        return self.lista
+
+        if lastPhrase == 'O que você gostaria de adicionar na sua lista?':
+            response = phrase.split(", ")
+            self.lista.append(response)
+            self.saveMemory()
+            return f"Você adicionou os itens {response} na lista"
+
         if lastPhrase == 'O que você quer que eu aprenda?':
             self.key = phrase
             return 'Digite o que eu devo responder:'
+
         if lastPhrase == 'Digite o que eu devo responder:':
             response = phrase
             self.phrases[self.key] = response
             self.saveMemory()
             return 'Aprendido!'
+
         try:
             response = str(eval(phrase))
             return response
@@ -107,8 +109,8 @@ class Joquinha():
         return phrase + name + '!'
     
     def saveMemory(self):
-        memory = open(self.name + '.json', 'w')
-        json.dump([self.known, self.phrases, self.lista], memory)
+        memory = open(self.name + '.json', 'w', encoding ='utf8')
+        json.dump([self.known, self.phrases, self.lista], memory, indent=2)
         memory.close()
                     
     def speak(self, phrase):
