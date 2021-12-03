@@ -18,9 +18,13 @@ class Joquinha():
                                            "tchau": "Tchau! Tchau!",
                                            "/lista": "O que você gostaria de adicionar na sua lista?",
                                            "/matematica": "Que conta você quer fazer?",
-                                           "/contato": "Que telefone você gostaria de obter?"
+                                           "/contato": "Que telefone você gostaria de obter?",
+                                           "/dicionario": "Digite o nome da sua lista" 
                                        },
-                                    []
+                                    [],
+                                    {
+                                        
+                                    }
                                 ]
                             '''
                         )
@@ -28,7 +32,7 @@ class Joquinha():
             memory = open(name + '.json', 'r')
 
         self.name = name
-        self.known, self.phrases, self.lista = json.load(memory)
+        self.known, self.phrases, self.lista, self.dicionario = json.load(memory)
         memory.close()
         self.historic = [None]
     
@@ -73,6 +77,16 @@ class Joquinha():
             self.saveMemory()
             return f"Você adicionou os itens {response} na lista"
 
+        if lastPhrase == "Digite o nome da sua lista":
+            self.nomeLista = phrase
+            return "O que você gostaria de adicionar na sua Lista?"
+
+        if lastPhrase == 'O que você gostaria de adicionar na sua Lista?':
+            self.dicionario[self.nomeLista] = phrase.split(", ")
+
+            self.saveMemory()
+            return f"Você adicionou os itens {phrase} na lista {self.nomeLista}"
+
         if lastPhrase == 'O que você quer que eu aprenda?':
             self.key = phrase
             return 'Digite o que eu devo responder:'
@@ -110,7 +124,7 @@ class Joquinha():
     
     def saveMemory(self):
         memory = open(self.name + '.json', 'w', encoding ='utf8')
-        json.dump([self.known, self.phrases, self.lista], memory, indent=2)
+        json.dump([self.known, self.phrases, self.lista, self.dicionario], memory, indent=2)
         memory.close()
                     
     def speak(self, phrase):
